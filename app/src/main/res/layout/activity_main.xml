@@ -49,34 +49,34 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="開始/一時停止"/>
+        android:text="開始/一時停止"/>
     <Button
         android:id="@+id/plus_one_min"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/start_stop"
-        tools:text="＋１分"/>
+        android:text="＋１分"/>
     <Button
         android:id="@+id/plus_five_min"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/plus_one_min"
-        tools:text="＋５分"/>
+        android:text="＋５分"/>
     <Button
         android:id="@+id/reset"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/plus_five_min"
-        tools:text="リセット"/>
+        android:text="リセット"/>
     <Button
         android:id="@+id/next_lap"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="次"
+        android:text="次"
         app:layout_constraintStart_toEndOf="@id/reset"
         app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
