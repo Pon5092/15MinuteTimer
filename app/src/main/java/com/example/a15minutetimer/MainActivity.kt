@@ -20,17 +20,28 @@ class MainActivity : AppCompatActivity() {
         var showTime = "88:88"
         var nowTime =baseTime
         var delayTime = 0
+        var showLap = "0"
+        var nowLap = 0
         var stop = false
-        //残り時間表示を動的になっているか，確認用（88:88）でＯＫ
+        //残り時間表示を動的になっているか，確認用（time =88:88, lap = 0）でＯＫ
         binding.timer.text = showTime
-
+        binding.lapNum.text = showLap
         fun flushTime(){
             showTime = (nowTime/60).toString() + ":"
             if((nowTime%60)<10) showTime += "0" + (nowTime%60)
             else showTime += (nowTime%60)
             binding.timer.text = showTime
         }
+        fun flushLap(){
+            showLap = nowLap.toString()
+            binding.lapNum.text = showLap
+        }
 
+        fun reset(){
+            delayTime = 0
+            nowTime = baseTime
+            flushTime()
+        }
         //一秒ごとに動作
         Timer().schedule(0, 1) {
             if(!stop){
@@ -58,13 +69,12 @@ class MainActivity : AppCompatActivity() {
             flushTime()
         }
         binding.reset.setOnClickListener {
-            delayTime = 0
-            nowTime = baseTime
-            flushTime()
+            reset()
         }
         binding.nextLap.setOnClickListener {
-            showTime = "nextLap"
-            binding.timer.text = showTime
+            reset()
+            nowLap++
+            flushLap()
         }
     }
 }
