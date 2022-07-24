@@ -1,7 +1,6 @@
 package com.example.a15minutetimer
 
 import android.media.AudioAttributes
-import android.media.AudioManager
 import android.media.SoundPool
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,19 +9,29 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 class MainActivity : AppCompatActivity() {
+    //オーディオ初期化
+    private fun audioIni(): SoundPool? {
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_ALARM).build()
+        val aSoundPool = SoundPool.Builder()
+            .setMaxStreams(1).setAudioAttributes(audioAttributes).build()
+        return aSoundPool
+    }
+
+    //時間止めるの解除
+    private fun unlockTimer(): Boolean {
+        return false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //画面を動的に
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //オーディオ
-        val audioAttributes = AudioAttributes.Builder()
-            .setUsage(AudioAttributes.USAGE_ALARM).build()
-        var aSoundPool = SoundPool.Builder()
-            .setMaxStreams(1).setAudioAttributes(audioAttributes).build()
-        var alarmSound = aSoundPool.load(this,R.raw.alarm_made_by_me,1)
-        aSoundPool.play(alarmSound, 1.0f, 1.0f, 0,0, 1.0f)
+        //音源初期化＆読み込み
+        val aSoundPool = audioIni()
+        val alarmSound = aSoundPool?.load(this,R.raw.alarm_made_by_me,1)
         //変数
         val lapTime = 15*60 //一ラップの長さ
         val oneMinute = 1*60 //一分
@@ -33,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         var showLap = "0" //ラップ数表示
         var nowLap = 0 //ラップ数
         var stop = false //一時停止中か
+        var timeZero = false //ゼロ秒か
         //残り時間表示を動的になっているか，確認用（time =88:88, lap = 0）でＯＫ
         binding.timer.text = showTime
         binding.lapNum.text = showLap
@@ -57,9 +67,15 @@ class MainActivity : AppCompatActivity() {
             if(!stop){
                 delayTime++
                 if(delayTime >= 1000){
-                    nowTime--
-                    flushTime()
+                    if(!timeZero) {
+                        nowTime--
+                        flushTime()
+                    }
                     delayTime = 0
+                }
+                if(!timeZero && nowTime <= 0) alarmSound?.let {
+                    timeZero = true
+                    aSoundPool.play(it, 1.0f, 1.0f, 0,0, 1.0f)
                 }
             }
         }
@@ -72,16 +88,20 @@ class MainActivity : AppCompatActivity() {
         }
         binding.plusOneMin.setOnClickListener {
             nowTime += oneMinute
+            timeZero =unlockTimer()
             flushTime()
         }
         binding.plusFiveMin.setOnClickListener {
             nowTime += fiveMinutes
+            timeZero =unlockTimer()
             flushTime()
         }
         binding.reset.setOnClickListener {
+            timeZero =unlockTimer()
             reset()
         }
         binding.nextLap.setOnClickListener {
+            timeZero =unlockTimer()
             reset()
             nowLap++
             flushLap()
