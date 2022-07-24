@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/tekow/AndroidStudioProjects/15MinuteTimer/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/tekow/AndroidStudioProjects/15MinuteTimer/app/src/main/res/layout/activity_main.xml" value="0.1796875" />
       </map>
     </option>

@@ -3,6 +3,8 @@ package com.example.a15minutetimer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.a15minutetimer.databinding.ActivityMainBinding
+import java.util.*
+import kotlin.concurrent.schedule
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,30 +13,40 @@ class MainActivity : AppCompatActivity() {
         //画面を動的に
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        var nowTime = "88:88"
-        //残り時間表示を動的になっているか，確認用（88:88）でＯＫ
-        binding.timer.text = nowTime
 
+        var showTime = "88:88"
+        var nowTime =15*60
+        //残り時間表示を動的になっているか，確認用（88:88）でＯＫ
+        binding.timer.text = showTime
+
+        //一秒ごとに動作
+        Timer().schedule(0, 1000) {
+            nowTime--
+            showTime = (nowTime/60).toString() + ":"
+            if((nowTime%60)<10) showTime += "0" + (nowTime%60)
+            else showTime += (nowTime%60)
+            binding.timer.text = showTime
+        }
         //ボタン押されたときの動作
         binding.startStop.setOnClickListener {
-            nowTime = "start/stop"
-            binding.timer.text = nowTime
+            showTime = "start/stop"
+            binding.timer.text = showTime
         }
         binding.plusOneMin.setOnClickListener {
-            nowTime = "plusOne"
-            binding.timer.text = nowTime
+            showTime = "plusOne"
+            binding.timer.text = showTime
         }
         binding.plusFiveMin.setOnClickListener {
-            nowTime = "plusFive"
-            binding.timer.text = nowTime
+            showTime = "plusFive"
+            binding.timer.text = showTime
         }
         binding.reset.setOnClickListener {
-            nowTime = "reset"
-            binding.timer.text = nowTime
+            showTime = "reset"
+            binding.timer.text = showTime
         }
         binding.nextLap.setOnClickListener {
-            nowTime = "nextLap"
-            binding.timer.text = nowTime
+            showTime = "nextLap"
+            binding.timer.text = showTime
         }
     }
 }
