@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 
         val baseTime = 15*60
         val oneMinute = 1*60
-        val fiveMites = 5*60
+        val fiveMinutes = 5*60
         var showTime = "88:88"
         var nowTime =baseTime
         var delayTime = 0
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             flushTime()
         }
         binding.plusFiveMin.setOnClickListener {
-            nowTime += fiveMites
+            nowTime += fiveMinutes
             flushTime()
         }
         binding.reset.setOnClickListener {
