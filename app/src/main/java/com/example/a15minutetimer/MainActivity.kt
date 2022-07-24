@@ -16,6 +16,8 @@ class MainActivity : AppCompatActivity() {
 
         var showTime = "88:88"
         var nowTime =15*60
+        var delayTime = 0
+        var stop = false
         //残り時間表示を動的になっているか，確認用（88:88）でＯＫ
         binding.timer.text = showTime
 
@@ -27,14 +29,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         //一秒ごとに動作
-        Timer().schedule(0, 1000) {
-            nowTime--
-            flushTime()
+        Timer().schedule(0, 1) {
+            if(!stop){
+                delayTime++
+                if(delayTime >= 1000){
+                    nowTime--
+                    flushTime()
+                    delayTime = 0
+                }
+            }
         }
         //ボタン押されたときの動作
         binding.startStop.setOnClickListener {
-            showTime = "start/stop"
-            binding.timer.text = showTime
+            stop = when (stop) {
+                true -> false
+                false -> true
+            }
         }
         binding.plusOneMin.setOnClickListener {
             nowTime += 60
