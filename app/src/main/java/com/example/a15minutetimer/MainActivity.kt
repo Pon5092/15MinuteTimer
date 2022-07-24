@@ -19,13 +19,17 @@ class MainActivity : AppCompatActivity() {
         //残り時間表示を動的になっているか，確認用（88:88）でＯＫ
         binding.timer.text = showTime
 
-        //一秒ごとに動作
-        Timer().schedule(0, 1000) {
-            nowTime--
+        fun flushTime(){
             showTime = (nowTime/60).toString() + ":"
             if((nowTime%60)<10) showTime += "0" + (nowTime%60)
             else showTime += (nowTime%60)
             binding.timer.text = showTime
+        }
+
+        //一秒ごとに動作
+        Timer().schedule(0, 1000) {
+            nowTime--
+            flushTime()
         }
         //ボタン押されたときの動作
         binding.startStop.setOnClickListener {
@@ -33,12 +37,12 @@ class MainActivity : AppCompatActivity() {
             binding.timer.text = showTime
         }
         binding.plusOneMin.setOnClickListener {
-            showTime = "plusOne"
-            binding.timer.text = showTime
+            nowTime += 60
+            flushTime()
         }
         binding.plusFiveMin.setOnClickListener {
-            showTime = "plusFive"
-            binding.timer.text = showTime
+            nowTime += 5 * 60
+            flushTime()
         }
         binding.reset.setOnClickListener {
             showTime = "reset"
