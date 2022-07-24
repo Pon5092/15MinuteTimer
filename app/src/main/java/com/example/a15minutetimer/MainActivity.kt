@@ -14,8 +14,11 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val baseTime = 15*60
+        val oneMinute = 1*60
+        val fiveMites = 5*60
         var showTime = "88:88"
-        var nowTime =15*60
+        var nowTime =baseTime
         var delayTime = 0
         var stop = false
         //残り時間表示を動的になっているか，確認用（88:88）でＯＫ
@@ -47,16 +50,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.plusOneMin.setOnClickListener {
-            nowTime += 60
+            nowTime += oneMinute
             flushTime()
         }
         binding.plusFiveMin.setOnClickListener {
-            nowTime += 5 * 60
+            nowTime += fiveMites
             flushTime()
         }
         binding.reset.setOnClickListener {
-            showTime = "reset"
-            binding.timer.text = showTime
+            delayTime = 0
+            nowTime = baseTime
+            flushTime()
         }
         binding.nextLap.setOnClickListener {
             showTime = "nextLap"
