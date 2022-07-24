@@ -1,5 +1,8 @@
 package com.example.a15minutetimer
 
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.media.SoundPool
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.a15minutetimer.databinding.ActivityMainBinding
@@ -13,7 +16,14 @@ class MainActivity : AppCompatActivity() {
         //画面を動的に
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        //オーディオ
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_ALARM).build()
+        var aSoundPool = SoundPool.Builder()
+            .setMaxStreams(1).setAudioAttributes(audioAttributes).build()
+        var alarmSound = aSoundPool.load(this,R.raw.alarm_made_by_me,1)
+        aSoundPool.play(alarmSound, 1.0f, 1.0f, 0,0, 1.0f)
+        //変数
         val lapTime = 15*60 //一ラップの長さ
         val oneMinute = 1*60 //一分
         val fiveMinutes = 5*60 //五分

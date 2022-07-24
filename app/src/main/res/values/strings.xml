@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">15MinuteTimer</string>
+    <string name="alarm_made_by_me">Alarm</string>
 </resources>
