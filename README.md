@@ -36,12 +36,3 @@
 |  plus_five_min  |  五分追加  |
 |  reset  |  リセット  |
 |  next_lap  |  ラップ数追加して次へ  |
-
-
-### 重要変数メモ
-|  変数名  |  ファイル名  |  役割  |
-| ---- | ---- | ---- |
-|  binding  |  MainActivity  | activity_main.xmlを参照 |
-|  showTime  |  MainActivity  | 表示する時間 |
-|  nowTime  |  MainActivity  | 現在のターマーの時間(秒） |
-|  stop  |  MainActivity  | 一時停止かどうか |
