@@ -26,7 +26,8 @@
 |  ファイル名  |  役割  |
 | ---- | ---- |
 |  activity_main.xml  |  画面の見た目  |
-|  MainActivity  |  メインのプログラム  |
+|  MainActivity  |  メインの動的UI表示他OnCreateに必要なもの  |
+|  MainModel  |  メインのロジック  |
 
 ### idメモ
 |  id  |  役割  |
