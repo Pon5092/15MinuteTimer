@@ -29,8 +29,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         //画面を動的に
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -55,16 +53,20 @@ class MainActivity : AppCompatActivity() {
         fun reset(){
             vars.delayTime = 0
             vars.nowTime = vars.lapTime
-            flushTime()
         }
         //一秒ごとに動作
+        Timer().schedule(0,1){
+            if(vars.backTime != vars.nowTime){
+                flushTime()
+                vars.backTime = vars.nowTime
+            }
+        }
         Timer().schedule(0, 1) {
             if(!vars.stop){
                 vars.delayTime++
                 if(vars.delayTime >= 1000){
                     if(!vars.timeZero) {
                         vars.nowTime--
-                        flushTime()
                     }
                     vars.delayTime = 0
                 }
@@ -84,12 +86,10 @@ class MainActivity : AppCompatActivity() {
         binding.plusOneMin.setOnClickListener {
             vars.nowTime += vars.oneMinute
             vars.timeZero =unlockTimer()
-            flushTime()
         }
         binding.plusFiveMin.setOnClickListener {
             vars.nowTime += vars.fiveMinutes
             vars.timeZero =unlockTimer()
-            flushTime()
         }
         binding.reset.setOnClickListener {
             vars.timeZero =unlockTimer()
