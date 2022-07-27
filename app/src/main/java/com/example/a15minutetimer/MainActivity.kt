@@ -54,26 +54,31 @@ class MainActivity : AppCompatActivity() {
             vars.delayTime = 0
             vars.nowTime = vars.lapTime
         }
-        //一秒ごとに動作
+
         Timer().schedule(0,1){
+            //残り時間更新ごとに変更
             if(vars.backTime != vars.nowTime){
                 flushTime()
                 vars.backTime = vars.nowTime
             }
+            //残り時間0かつ停止なしでアラーム起動
+            if(!vars.stop && !vars.timeZero && vars.nowTime <= 0) alarmSound?.let {
+                vars.timeZero = true
+                aSoundPool.play(it, 1.0f, 1.0f, 0,0, 1.0f)
+            }
         }
+
         Timer().schedule(0, 1) {
             if(!vars.stop){
                 vars.delayTime++
+                //一秒ごとに起動
                 if(vars.delayTime >= 1000){
                     if(!vars.timeZero) {
                         vars.nowTime--
                     }
                     vars.delayTime = 0
                 }
-                if(!vars.timeZero && vars.nowTime <= 0) alarmSound?.let {
-                    vars.timeZero = true
-                    aSoundPool.play(it, 1.0f, 1.0f, 0,0, 1.0f)
-                }
+
             }
         }
         //ボタン押されたときの動作

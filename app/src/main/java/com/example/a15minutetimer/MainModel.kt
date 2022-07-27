@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 
 class MainModel : ViewModel() {
     //変数
-    val lapTime = 15*60 //一ラップの長さ
+    val lapTime = 1*10 //一ラップの長さ
     val oneMinute = 1*60 //一分
     val fiveMinutes = 5*60 //五分
     var showTime = "88:88" //現在の残り時間表示
