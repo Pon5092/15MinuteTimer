@@ -10,6 +10,14 @@ import kotlin.concurrent.schedule
 import androidx.activity.viewModels
 
 class MainActivity : AppCompatActivity() {
+    //MainModelのデータ見れるように
+    private val viewModel by viewModels<MainModel>()
+    private val model get() = viewModel
+
+    // 表示する場所確認
+    private var showTime = "88:88" //現在の残り時間表示
+    private var showLap = "0" //ラップ数表示
+
     //オーディオ初期化
     private fun audioIni(): SoundPool? {
         val audioAttributes = AudioAttributes.Builder()
@@ -18,13 +26,19 @@ class MainActivity : AppCompatActivity() {
             .setMaxStreams(1).setAudioAttributes(audioAttributes).build()
     }
 
-    //時間止めるの解除
-    private fun unlockTimer(): Boolean {
-        return false
+    //時間表示更新
+    private fun flushTime(binding: ActivityMainBinding){
+        showTime = (model.nowTime/60).toString() + ":"
+        if((model.nowTime%60)<10) showTime += "0" + (model.nowTime%60)
+        else showTime += (model.nowTime%60)
+        binding.timer.text = showTime
     }
 
-    private val viewModel by viewModels<MainModel>()
-    private val vars get() = viewModel
+    //ラップ表示更新
+    private fun flushLap(binding: ActivityMainBinding){
+        showLap = model.nowLap.toString()
+        binding.lapNum.text = showLap
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,74 +51,42 @@ class MainActivity : AppCompatActivity() {
         val alarmSound = aSoundPool?.load(this,R.raw.alarm_made_by_me,1)
 
         //残り時間表示を動的になっているか，確認用（time =88:88, lap = 0）でＯＫ
-        binding.timer.text = vars.showTime
-        binding.lapNum.text = vars.showLap
-        fun flushTime(){
-            vars.showTime = (vars.nowTime/60).toString() + ":"
-            if((vars.nowTime%60)<10) vars.showTime += "0" + (vars.nowTime%60)
-            else vars.showTime += (vars.nowTime%60)
-            binding.timer.text = vars.showTime
-        }
-        fun flushLap(){
-            vars.showLap = vars.nowLap.toString()
-            binding.lapNum.text = vars.showLap
-        }
+        binding.timer.text = showTime
+        binding.lapNum.text = showLap
 
-        fun reset(){
-            vars.delayTime = 0
-            vars.nowTime = vars.lapTime
-        }
+        //タイマースタート
+        model.startTimer()
 
+        //常に監視
         Timer().schedule(0,1){
             //残り時間更新ごとに変更
-            if(vars.backTime != vars.nowTime){
-                flushTime()
-                vars.backTime = vars.nowTime
+            if(model.updateTime){
+                model.updateTime = false
+                flushTime(binding)
             }
             //残り時間0かつ停止なしでアラーム起動
-            if(!vars.stop && !vars.timeZero && vars.nowTime <= 0) alarmSound?.let {
-                vars.timeZero = true
+            if(model.alarmOn) alarmSound?.let {
+                model.alarmOn = false
                 aSoundPool.play(it, 1.0f, 1.0f, 0,0, 1.0f)
             }
         }
 
-        Timer().schedule(0, 1) {
-            if(!vars.stop){
-                vars.delayTime++
-                //一秒ごとに起動
-                if(vars.delayTime >= 1000){
-                    if(!vars.timeZero) {
-                        vars.nowTime--
-                    }
-                    vars.delayTime = 0
-                }
-
-            }
-        }
         //ボタン押されたときの動作
         binding.startStop.setOnClickListener {
-            vars.stop = when (vars.stop) {
-                true -> false
-                false -> true
-            }
+            model.onFlag("startStop")
         }
         binding.plusOneMin.setOnClickListener {
-            vars.nowTime += vars.oneMinute
-            vars.timeZero =unlockTimer()
+            model.onFlag("plusOneMin")
         }
         binding.plusFiveMin.setOnClickListener {
-            vars.nowTime += vars.fiveMinutes
-            vars.timeZero =unlockTimer()
+            model.onFlag("plusFiveMin")
         }
         binding.reset.setOnClickListener {
-            vars.timeZero =unlockTimer()
-            reset()
+            model.onFlag("reset")
         }
         binding.nextLap.setOnClickListener {
-            vars.timeZero =unlockTimer()
-            reset()
-            vars.nowLap++
-            flushLap()
+            model.onFlag("nextLap")
+            flushLap(binding)
         }
     }
 }
