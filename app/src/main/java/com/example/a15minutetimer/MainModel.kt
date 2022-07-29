@@ -6,15 +6,16 @@ import kotlin.concurrent.schedule
 
 class MainModel : ViewModel() {
     //変数
-    private val lapTime = 15*60 //一ラップの長さ
+    private val lapTime = 5 //一ラップの長さ
     private val oneMinute = 1*60 //一分
     private val fiveMinutes = 5*60 //五分
     var nowTime =lapTime //現在の残り時間
+    var timeSum =lapTime //合計の経過時間
     private var backTime = nowTime //少し前の残り時間
     private var delayTime = 0 //ミリ秒保存
     var nowLap = 0 //ラップ数
     private var stop = false //一時停止中か
-    private var timeZero = false //ゼロ秒か
+    var timeZero = false //ゼロ秒か
     //フラグ管理
     private var startStop = false
     private var plusOneMin = false
@@ -45,6 +46,7 @@ class MainModel : ViewModel() {
             if(!stop && !timeZero && nowTime <= 0){
                 alarmOn = true
                 timeZero = true
+                updateTime = true
             }
         }
     }
@@ -53,6 +55,7 @@ class MainModel : ViewModel() {
     private fun reset(){
         delayTime = 0
         nowTime = lapTime
+        timeSum = lapTime
     }
 
     //時間止めるの解除
@@ -79,11 +82,13 @@ class MainModel : ViewModel() {
         if(plusOneMin){
             plusOneMin = false
             nowTime += oneMinute
+            timeSum += oneMinute
             unlockTimer()
         }
         if(plusFiveMin){
             plusFiveMin = false
             nowTime += fiveMinutes
+            timeSum += fiveMinutes
             unlockTimer()
         }
         if(reset){

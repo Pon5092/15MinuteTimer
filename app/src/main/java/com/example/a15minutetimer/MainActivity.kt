@@ -28,10 +28,18 @@ class MainActivity : AppCompatActivity() {
 
     //時間表示更新
     private fun flushTime(binding: ActivityMainBinding){
-        showTime = (model.nowTime/60).toString() + ":"
-        if((model.nowTime%60)<10) showTime += "0" + (model.nowTime%60)
-        else showTime += (model.nowTime%60)
-        binding.timer.text = showTime
+        val time: Int = if(model.timeZero) model.timeSum
+        else model.nowTime
+
+        showTime = (time/60).toString()
+        if(model.timeZero){
+            binding.timer.text = showTime + "分経過"
+        } else{
+            showTime += ":"
+            if((time%60)<10) showTime += "0" + (time%60)
+            else showTime += (time%60)
+            binding.timer.text = showTime
+        }
     }
 
     //ラップ表示更新
