@@ -27,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@id/title" />
     <TextView
         android:id="@+id/laps"
-        android:layout_width="wrap_content"
+        android:layout_width="200sp"
         android:layout_height="wrap_content"
         android:text="ラップ数"
         app:layout_constraintTop_toBottomOf="@id/title"
@@ -35,14 +35,22 @@
     <TextView
         android:id="@+id/lap_num"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="99"
         android:textSize="30sp"
         android:gravity="center"
-        app:layout_constraintStart_toStartOf="@id/laps"
-        app:layout_constraintBottom_toTopOf="@id/next_lap"
         app:layout_constraintTop_toBottomOf="@id/laps"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toStartOf="@id/laps"
+        app:layout_constraintEnd_toEndOf="@id/laps"/>
+    <TextView
+        android:id="@+id/lapLog"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="logs"
+        app:layout_constraintTop_toBottomOf="@+id/lap_num"
+        app:layout_constraintStart_toStartOf="@+id/laps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/next_lap"/>
     <Button
         android:id="@+id/start_stop"
         android:layout_width="0dp"
