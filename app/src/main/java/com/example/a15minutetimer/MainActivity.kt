@@ -61,9 +61,11 @@ class MainActivity : AppCompatActivity() {
         val controller = HistoryController()
         //履歴画面をメイン画面に組み込み
         binding.recyclerView.adapter = controller.adapter
+
         setContentView(binding.root)
         //
         val test = "てすと"
+        historySave.add(test)
         historySave.add(test)
         controller.setData(historySave)
 

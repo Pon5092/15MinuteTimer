@@ -49,7 +49,8 @@
         app:layout_constraintTop_toBottomOf="@+id/lap_num"
         app:layout_constraintStart_toStartOf="@+id/laps"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/next_lap"/>
+        app:layout_constraintBottom_toTopOf="@+id/next_lap"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     <Button
         android:id="@+id/start_stop"
         android:layout_width="0dp"

@@ -6,11 +6,12 @@ import java.util.*
 class HistoryController: TypedEpoxyController<List<String>>() {
 
     override fun buildModels(data: List<String>) {
-        data.forEach{ historyData ->
-             historyRow{
+        data.forEach { historyData ->
+            //model_lap_history_list.xmlにおいて
+            lapHistoryList {
                 id(UUID.randomUUID().toString())
                 historyShow(historyData)
-             }
+            }
         }
     }
 }
