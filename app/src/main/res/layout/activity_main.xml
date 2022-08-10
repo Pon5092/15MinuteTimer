@@ -42,11 +42,10 @@
         app:layout_constraintTop_toBottomOf="@id/laps"
         app:layout_constraintStart_toStartOf="@id/laps"
         app:layout_constraintEnd_toEndOf="@id/laps"/>
-    <TextView
-        android:id="@+id/lapLog"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="logs"
         app:layout_constraintTop_toBottomOf="@+id/lap_num"
         app:layout_constraintStart_toStartOf="@+id/laps"
         app:layout_constraintEnd_toEndOf="parent"

@@ -12,7 +12,11 @@ import androidx.activity.viewModels
 class MainActivity : AppCompatActivity() {
     //MainModelのデータ見れるように
     private val viewModel by viewModels<MainModel>()
-    private val model get() = viewModel
+    private val mainModel get() = viewModel
+
+    //historyText(履歴データ）の保存場所認識
+    private val historyModel by viewModels<HistoryModel>()
+    private val historySave get() = historyModel.historyText
 
     // 表示する場所確認
     private var showTime = "88:88" //現在の残り時間表示
@@ -28,11 +32,11 @@ class MainActivity : AppCompatActivity() {
 
     //時間表示更新
     private fun flushTime(binding: ActivityMainBinding){
-        val time: Int = if(model.timeZero) model.timeSum
-        else model.nowTime
+        val time: Int = if(mainModel.timeZero) mainModel.timeSum
+        else mainModel.nowTime
 
         showTime = (time/60).toString()
-        if(model.timeZero){
+        if(mainModel.timeZero){
             binding.timer.text = showTime + "分経過"
         } else{
             showTime += ":"
@@ -44,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     //ラップ表示更新
     private fun flushLap(binding: ActivityMainBinding){
-        showLap = model.nowLap.toString()
+        showLap = mainModel.nowLap.toString()
         binding.lapNum.text = showLap
     }
 
@@ -53,47 +57,57 @@ class MainActivity : AppCompatActivity() {
 
         //画面を動的に
         val binding = ActivityMainBinding.inflate(layoutInflater)
+        //履歴画面認識＆変数適応
+        val controller = HistoryController()
+        //履歴画面をメイン画面に組み込み
+        binding.recyclerView.adapter = controller.adapter
         setContentView(binding.root)
+        //
+        val test = "てすと"
+        historySave.add(test)
+        controller.setData(historySave)
+
         //音源初期化＆読み込み
         val aSoundPool = audioIni()
         val alarmSound = aSoundPool?.load(this,R.raw.alarm_made_by_me,1)
+
 
         //残り時間表示を動的になっているか，確認用（time =88:88, lap = 0）でＯＫ
         binding.timer.text = showTime
         binding.lapNum.text = showLap
 
         //タイマースタート
-        model.startTimer()
+        mainModel.startTimer()
 
         //常に監視
         Timer().schedule(0,1){
             //残り時間更新ごとに変更
-            if(model.updateTime){
-                model.updateTime = false
+            if(mainModel.updateTime){
+                mainModel.updateTime = false
                 flushTime(binding)
             }
             //残り時間0かつ停止なしでアラーム起動
-            if(model.alarmOn) alarmSound?.let {
-                model.alarmOn = false
+            if(mainModel.alarmOn) alarmSound?.let {
+                mainModel.alarmOn = false
                 aSoundPool.play(it, 1.0f, 1.0f, 0,0, 1.0f)
             }
         }
 
         //ボタン押されたときの動作
         binding.startStop.setOnClickListener {
-            model.onFlag("startStop")
+            mainModel.onFlag("startStop")
         }
         binding.plusOneMin.setOnClickListener {
-            model.onFlag("plusOneMin")
+            mainModel.onFlag("plusOneMin")
         }
         binding.plusFiveMin.setOnClickListener {
-            model.onFlag("plusFiveMin")
+            mainModel.onFlag("plusFiveMin")
         }
         binding.reset.setOnClickListener {
-            model.onFlag("reset")
+            mainModel.onFlag("reset")
         }
         binding.nextLap.setOnClickListener {
-            model.onFlag("nextLap")
+            mainModel.onFlag("nextLap")
             flushLap(binding)
         }
     }

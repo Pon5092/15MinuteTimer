@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import java.util.*
 import kotlin.concurrent.schedule
 
+
 class MainModel : ViewModel() {
     //変数
     private val lapTime = 15*60 //一ラップの長さ
