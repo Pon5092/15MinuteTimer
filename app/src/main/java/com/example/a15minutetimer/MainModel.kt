@@ -7,7 +7,7 @@ import kotlin.concurrent.schedule
 
 class MainModel : ViewModel() {
     //変数
-    private val lapTime = 5 //一ラップの長さ
+    private val lapTime = 15*60 //一ラップの長さ
     private val oneMinute = 1*60 //一分
     private val fiveMinutes = 5*60 //五分
     var nowTime =lapTime //現在の残り時間
