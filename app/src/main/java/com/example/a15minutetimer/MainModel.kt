@@ -17,6 +17,7 @@ class MainModel : ViewModel() {
     var nowLap = 0 //ラップ数
     private var stop = false //一時停止中か
     var timeZero = false //ゼロ秒か
+    var saveTime = 0 //時間
     //フラグ管理
     private var startStop = false
     private var plusOneMin = false
@@ -98,6 +99,7 @@ class MainModel : ViewModel() {
         }
         if(nextLap){
             nextLap = false
+            saveTime = timeSum - nowTime
             unlockTimer()
             reset()
             nowLap++

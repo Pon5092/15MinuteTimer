@@ -8,6 +8,8 @@ import com.example.a15minutetimer.databinding.ActivityMainBinding
 import java.util.*
 import kotlin.concurrent.schedule
 import androidx.activity.viewModels
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
     //MainModelのデータ見れるように
@@ -63,10 +65,7 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.adapter = controller.adapter
 
         setContentView(binding.root)
-        //
-        val test = "てすと"
-        historySave.add(test)
-        historySave.add(test)
+
         controller.setData(historySave)
 
         //音源初期化＆読み込み
@@ -111,6 +110,18 @@ class MainActivity : AppCompatActivity() {
         binding.nextLap.setOnClickListener {
             mainModel.onFlag("nextLap")
             flushLap(binding)
+            var saveString = ""
+            saveString += showLap + "Lap "
+            val timePast = mainModel.saveTime
+            saveString += (timePast/60).toString() + ":"
+            if((timePast%60)<10) saveString += "0"
+            saveString += (timePast%60).toString()
+            historySave.add(saveString)
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ISO_LOCAL_TIME
+            val localTime = current.format(formatter)
+            historySave.add("($localTime)")
+            controller.setData(historySave)
         }
     }
 }
