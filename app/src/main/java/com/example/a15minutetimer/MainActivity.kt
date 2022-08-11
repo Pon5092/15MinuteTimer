@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         else mainModel.nowTime
 
         showTime = (time/60).toString()
-        if(mainModel.timeZero){
+        if(mainModel.timeZero && mainModel.past){
             binding.timer.text = showTime + "分経過"
         } else{
             showTime += ":"
