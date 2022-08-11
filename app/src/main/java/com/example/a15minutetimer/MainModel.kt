@@ -26,7 +26,7 @@ class MainModel : ViewModel() {
     private var nextLap = false
     var updateTime = false
     var alarmOn = false
-    var past = false
+    var past = true
 
     //タイマースタート
     fun startTimer(){
@@ -109,6 +109,7 @@ class MainModel : ViewModel() {
             unlockTimer()
             reset()
             nowLap++
+            stop = false
             past = true
         }
     }
