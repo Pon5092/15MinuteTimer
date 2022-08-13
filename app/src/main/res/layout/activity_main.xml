@@ -20,7 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="99:99"
-        android:textSize="100sp"
+        android:textSize="150sp"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/start_stop"
@@ -43,11 +43,22 @@
         app:layout_constraintTop_toBottomOf="@id/laps"
         app:layout_constraintStart_toStartOf="@id/laps"
         app:layout_constraintEnd_toEndOf="@id/laps"/>
+    <TextView
+        android:id="@+id/history"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="履歴"
+        android:gravity="left"
+        app:layout_constraintTop_toBottomOf="@id/lap_num"
+        app:layout_constraintStart_toStartOf="@id/lap_num"
+        app:layout_constraintEnd_toEndOf="@id/laps"/>
+
+    />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/lap_num"
+        app:layout_constraintTop_toBottomOf="@+id/history"
         app:layout_constraintStart_toStartOf="@+id/laps"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/next_lap"
